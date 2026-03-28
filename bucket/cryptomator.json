@@ -14,8 +14,7 @@
         }
     },
     "extract_dir": "PFiles64/Cryptomator",
-    "post_install": [
-    "    # 修改Cryptomator配置路径",
+"post_install": [
     "    $cfg = \"$dir\\app\\Cryptomator.cfg\"",
     "    $ReplaceMap = [Ordered]@{",
     "        'C:/ProgramData'            = './data/programdata'",
@@ -25,17 +24,11 @@
     "        'C:/cryptomator'            = './data/cryptomator'",
     "        'disableUpdateCheck=false'  = 'disableUpdateCheck=true'",
     "    }",
-    "    $c = Get-Content $cfg -Encoding UTF8 | ForEach-Object {",
-    "        $pos = $_.LastIndexOf('=')",
-    "        if($pos -le 0) { $_; return }",
-    "        $k = $_.Substring(0, $pos)",
-    "        $v = $_.Substring($pos + 1)",
-    "        $v = ($v -split ';')[0]",
-    "        foreach($p in $ReplaceMap.Keys){ $v = $v -replace [regex]::Escape($p), $ReplaceMap[$p] }",
-    "        \"$k=$v\"",
-    "    }",
+    "    $c = Get-Content $cfg -Encoding UTF8",
+    "    $c = $c -replace ';.*', ''",
+    "    foreach($p in $ReplaceMap.Keys) { $c = $c -replace [regex]::Escape($p), $ReplaceMap[$p] }",
     "    Set-Content $cfg -Encoding UTF8 -Value $c"
-],
+], 
     "bin": "Cryptomator.exe",
     "shortcuts": [
         [
