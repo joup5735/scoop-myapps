@@ -15,14 +15,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-
-      - name: Download official checkver.ps1
-        run: |
-          Invoke-WebRequest -Uri https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/bin/checkver.ps1 -OutFile checkver.ps1
+        
+      - name: Checkout Scoop
+        run: git clone https://github.com/ScoopInstaller/Scoop.git
 
       - name: Run checkver on manifest
-        run: |
-          pwsh ./checkver.ps1 "$PWD/bucket/cryptomator.json" -Update
+        run: pwsh ./Scoop/bin/checkver.ps1 "$PWD/bucket/cryptomator.json" -Update
 
       - name: Commit changes
         run: |
